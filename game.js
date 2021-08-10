@@ -34,22 +34,17 @@ const choices = ["rock", "paper", "scissors"];
 
 function computerPlay() {
 
-const random = Math.floor(Math.random() * choices.length); 
+
+ const random = Math.floor(Math.random() * choices.length); 
 
 return (random, choices[random]);
 
+
 }
-
-const computerSelection = computerPlay();
-
-
-
-
 
 
 function playerSelection() {
-
-return userSelection;
+	return userSelection;
 
 }
 
@@ -82,18 +77,20 @@ function playRound(playerSelection, computerSelection) {
 
 			else if (playerSelection === "rock" && computerSelection === "paper") {
 
+								computerScore++;
+
 				return lose;
 
-				computerScore++;
 	
 				
 	        }
 
 
 			else if (playerSelection === "paper" && computerSelection === "rock") {
-		
+				
+					playerScore++;
+
 			return win;
-			playerScore++;
 
 			}
 
@@ -146,18 +143,84 @@ function playRound(playerSelection, computerSelection) {
 
 
 
-for (var i = 0; i < 5; i++) {
- 	playerSelection();
-computerPlay();
 
+var computerSelection;
+
+let userSelection;
+let div = document.createElement('results');
+
+
+
+
+
+
+const buttons = document.querySelectorAll('button');
+
+let click_count = 0;
+
+function myClick(event) {
 		
-		var userSelection = prompt("Rock, Paper, Scissors").toLowerCase();
+	click_count++;
 
-   		console.log(playRound(userSelection, computerSelection))
-      console.log("your score = " + playerScore);
-      console.log("Computer's score = " + computerScore);
+computerSelection = computerPlay();
+	
+userSelection = event.target.id;
+	computerPlay();
+	playRound(userSelection, computerSelection);
+	
+	div.innerHTML = "Player: " + event.target.id + '</br>' + "Computer: " + computerSelection + '</br>' + "player score: " + playerScore + '</br>' + "computer score: " + computerScore;
+ 
+	   console.log(click_count);	   
 
-}
-  
-     
+	   if (playerScore === 5 || computerScore === 5) {
+		   buttons.forEach((button) => 
+		   button.removeEventListener('click', myClick));
+		   for (let i = 0; i < buttons.length; i++) {
+			buttons[i].remove();
+		}
+		  gameResult();
+	   }
+	};
+
+
+
+
+	function gameResult() {
+		if(playerScore > computerScore) {
+			return div.innerHTML = "You win! " + '</br>' + "Player: " + playerScore + '</br>' + "computer: " + computerScore;
+		}
+		
+		else if (playerScore < computerScore) {
+			return div.innerHTML = "You lose! " +  '</br>' +  "Player: " + playerScore + '</br>' + "computer: " + computerScore;
+
+
+		} 
+		else if(playerScore === computerScore) {
+			return div.innerHTML = "That's a tie, folks!" + '</br>' + "player: " + playerScore + '</br>' + "computer: " + computerScore;
+		}
+		
+	}
+
+
+
+ buttons.forEach((button) => { 
+
+
+
+	button.addEventListener('click', myClick); 
+ 
+
+
+
+}); 
+
+
+
+
+
+
+
+
+container.appendChild(div);
+
 
